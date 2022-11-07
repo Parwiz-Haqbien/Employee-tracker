@@ -1,1 +1,2 @@
 # Employee-tracker
+The project is almost finished just a few area that needs to make right but overall this is the code for this weeks homework. I had dificulty trying to start up the code but hopefully I figure it out soon

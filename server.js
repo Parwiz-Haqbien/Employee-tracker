@@ -17,7 +17,15 @@ db.connect(function(err) {
     if (err) throw err;
     startPrompt();
   });
+    
 
+  startPrompt = () => {
+    console.log('*********************')
+    console.log('*                   *')
+    console.log('*     Welcome!      *')
+    console.log('*                   *')
+    console.log('*********************')
+  }
   function startPrompt() {
     inquirer
       .prompt([ 
@@ -105,7 +113,7 @@ db.connect(function(err) {
    function selectRole() {
     db.query('SELECT + FROM role', function(error, respond) {
         if(error) throw error
-        for(var i = 0; i < respond.length; ++) {
+        for(var i = 0; i < respond.length; ++i) {
             roleAdding.push(respond[i].title)
         }
     })
@@ -117,7 +125,7 @@ db.connect(function(err) {
    function selectManager() {
     db.query('SELECT first_name, last_name FROM employee WHERE manager_id IS NULL', function(error, respond) {
         if(error) throw error
-        for(var i = 0; i < respond.length; ++) {
+        for(var i = 0; i < respond.length; ++ iS) {
             managerAdding.push(respond[i].title)
         }
     })
@@ -169,4 +177,102 @@ db.connect(function(err) {
                     startPrompt();
              })
     })
+   }
+
+   function updateEmployee() {
+    db.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id= role.id;", function(error,respond) {
+        if (error) throw error 
+        console.log(respond)
+        inquirer
+        .prompt([
+            {
+                name: 'lastname',
+                type: 'rawlist',
+                choices: function() {
+                    var lastname = [];
+                    for (var i = 0; i<respond.length; i++) {
+                        lastname.push(respond[i].last_name);
+                    }
+                    return lastname;
+                },
+                message: ' what is your Employees last name?',
+            },
+            {
+                name: 'role',
+                type: 'rawlist',
+                message: 'what is the employees new title?',
+                choices: selectRole()
+            }
+        ]).then(function(val) {
+            var roleID = selectRole().indexOf(val.role) + 1
+            db.query('where should the new update be ?' ,
+            {
+                last_name: val.lastname
+            },
+            {
+                role_id: roleId
+            },
+            function(error) {
+                if (error) throw error
+                console.log(val)
+                startPrompt()
+            })
+        });
+    });
+   }
+
+
+   function addRole() {
+    db.query('SELECT role.title AS Title, role.salary AS salary FROM role',  function(error,respond) {
+        inquirer
+        .prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'what is the role title ?'
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'what is the salary ?'
+            }
+        ]).then(function(respond) {
+            db.query(
+                "should it be placed in the role set?",
+                {
+                    title: respond.Title,
+                    salary: respond.salary
+                },
+                function(error) {
+                    if (error) throw error
+                console.log(val)
+                startPrompt()
+                }
+            )
+        })
+    })
+   }
+
+
+   function addDepartment() {
+    inquirer
+    .prompt([
+        {
+            name: 'name',
+            type: 'input',
+            message: 'what department do you want to add to ?'
+        },
+    ]).then(function(respond) {
+    var list = db.query (
+        "should it be placed into the department set?",
+        {
+            name: respond.name
+        },
+        function(error) {
+            if (error) throw error
+        console.log(val)
+        startPrompt()
+        }
+    )
+   })
    }
