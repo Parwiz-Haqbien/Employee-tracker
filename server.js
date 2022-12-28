@@ -1,24 +1,19 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
+const {connection} = require('./Main/db/connection');
 const terminalTable = require('console.table');
-require('dotenv').config();
-const express = require('express');
 
 
-db.connect(function(err) {
-    if (err) throw err;
-    startPrompt();
-  });
-    
 
-  startPrompt = () => {
+
+
+  init = () => {
     console.log('*********************')
     console.log('*                   *')
     console.log('*     Welcome!      *')
     console.log('*                   *')
     console.log('*********************')
   }
-  function startPrompt() {
+  function init() {
     inquirer
       .prompt([ 
         {
@@ -37,42 +32,39 @@ db.connect(function(err) {
         ]
     }
       
-    ]).then(function(answser) {
-        switch(answser.choice) {
-       case "View all deparment?": 
-       viewALLDepartment();
-       break;
-       
-       case "View all roles?": 
-       viewALLRoles();
-       break;
-
-       case "View all employees?": 
-       viewALLEmployees();
-       break;
-
-       case "add a department?": 
-       addDepartment();
-       break;
-
-       case "add a role?": 
-       addRole();
-       break;
-
-       case "add a employee?": 
-       addEmployee();
-       break;
-
-       case "update a employee role?": 
-       updateEmployee();
-       break;
-
-       case "would you like to exist?": 
-       exitOut();
-       break; 
+    ]).then((res) => {
+        let choice = res.choice;
+        switch(choice) {
+            case "View all roles?": 
+            viewALLRoles();
+            break;
+     
+            case "View all employees?": 
+            viewALLEmployees();
+            break;
+     
+            case "add a department?": 
+            addDepartment();
+            break;
+     
+            case "add a role?": 
+            addRole();
+            break;
+     
+            case "add a employee?": 
+            addEmployee();
+            break;
+     
+            case "update a employee role?": 
+            updateEmployee();
+            break;
+     
+            case "would you like to exist?": 
+            connection.end();
+            break; 
+             }
         }
-    })
-  }
+    )};
 
   function viewALLDepartment() {
     db.query("SELECT employee.first_name, employee.last_name, deparment.name As Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role;",
