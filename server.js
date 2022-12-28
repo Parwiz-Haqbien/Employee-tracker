@@ -80,23 +80,31 @@ const { query } = require('express');
         }, 1000);
       }
 
-  function viewALLRoles() {
-    db.query("SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;",
-    function(error, respond) {
-        if(error) throw error
-        console.table(respond)
-        startPrompt()
-    })
-  }
-  
-  function viewALLEmployees() {
-    db.query("SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name,'',e.last_name) AS Manger FROM employee;",
-    function(error, respond) {
-        if(error) throw error
-        console.table(respond)
-        startPrompt()
-    })
-}
+      function viewALLRoles() {
+        setTimeout(() => {
+          let query = "SELECT * FROM roles";
+          connection.query(query, function (err, res) {
+            if (err) throw err;
+            {
+              console.table(res);
+            }
+            init();
+          });
+        }, 1000);
+      }
+
+      function viewALLEmployees() {
+        setTimeout(() => {
+          let query = "SELECT * FROM employee";
+          connection.query(query, function (err, res) {
+            if (err) throw err;
+            {
+              console.table(res);
+            }
+            init();
+          });
+        }, 1000);
+      }
 
    var roleAdding = [];
    function selectRole() {
