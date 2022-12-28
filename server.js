@@ -1,7 +1,6 @@
 const inquirer = require('inquirer');
 const {connection} = require('./Main/db/connection');
 const terminalTable = require('console.table');
-const { query } = require('express');
 
 
 
@@ -146,6 +145,65 @@ const { query } = require('express');
           }, 1000);
         }
 
+        function addRole() {
+            connection.query(
+              `SELECT department.id AS "Dept ID", department.name AS "Dept Name", title AS "Role Title", salary, department_id AS "Role Table Department ID"
+                  FROM department
+                  LEFT JOIN roles r 
+                  ON department.id = department_id;`,
+              (err, res) => {
+                if (err) throw err;
+                console.table(res);
+              }
+            );
+            setTimeout(() => {
+              inquirer;
+              inquirer
+                .prompt([
+                  {
+                    name: "roleTitle",
+                    type: "input",
+                    message: "What is the role title",
+                  },
+        
+                  {
+                    name: "roleSalary",
+                    type: "input",
+                    message: "What is the salary",
+                  },
+                  {
+                    name: "departmentId",
+                    type: "input",
+                    message: "What is the department id?",
+                  },
+                ])
+                .then(function (answer) {
+                  connection.query(
+                    "INSERT INTO roles SET ?",
+                    {
+                      title: answer.roleTitle,
+                      salary: answer.roleSalary,
+                      department_id: answer.departmentId,
+                    },
+                    function (err) {
+                      if (err) {
+                        throw err;
+                      } else {
+                        let query = `SELECT * FROM roles`;
+                        connection.query(query, function (err, res) {
+                          if (err) throw err;
+                          {
+                            console.table(res);
+                          }
+                          init();
+                        });
+                      }
+                    }
+                  );
+                });
+            }, 1000);
+        }
+
    function updateEmployee() {
     db.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id= role.id;", function(error,respond) {
         if (error) throw error 
@@ -186,38 +244,6 @@ const { query } = require('express');
             })
         });
     });
-   }
-
-
-   function addRole() {
-    db.query('SELECT role.title AS Title, role.salary AS salary FROM role',  function(error,respond) {
-        inquirer
-        .prompt([
-            {
-                name: 'title',
-                type: 'input',
-                message: 'what is the role title ?'
-            },
-            {
-                name: 'salary',
-                type: 'input',
-                message: 'what is the salary ?'
-            }
-        ]).then(function(respond) {
-            db.query(
-                "should it be placed in the role set?",
-                {
-                    title: respond.Title,
-                    salary: respond.salary
-                },
-                function(error) {
-                    if (error) throw error
-                console.log(val)
-                startPrompt()
-                }
-            )
-        })
-    })
    }
 
 
