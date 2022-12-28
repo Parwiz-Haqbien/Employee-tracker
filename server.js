@@ -1,17 +1,9 @@
-const mysql = require ('mysql');
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
 const terminalTable = require('console.table');
+require('dotenv').config();
+const express = require('express');
 
-const db = mysql.createConnection (
-    {
-        host: 'localhost',
-        //MySQL username
-        user: 'root',
-        //password for MySQL
-        password: 'Rooney21@',
-        database: 'tracker_db' 
-    }, console.log('This is connected to the tracker_db database ')
-);
 
 db.connect(function(err) {
     if (err) throw err;
