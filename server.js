@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const {connection} = require('./Main/db/connection');
 const terminalTable = require('console.table');
+const { query } = require('express');
 
 
 
@@ -66,14 +67,18 @@ const terminalTable = require('console.table');
         }
     )};
 
-  function viewALLDepartment() {
-    db.query("SELECT employee.first_name, employee.last_name, deparment.name As Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role;",
-    function(error, respond) {
-        if(error) throw error
-        console.table(respond)
-        startPrompt()
-    })
-  }
+    function viewALLDepartment() {
+        setTimeout(() => {
+          let query = "SELECT * FROM department";
+          connection.query(query, function (err, res) {
+            if (err) throw err;
+            {
+              console.table(res);
+            }
+            init();
+          });
+        }, 1000);
+      }
 
   function viewALLRoles() {
     db.query("SELECT employee.first_name, employee.last_name, role.title AS Title FROM employee JOIN role ON employee.role_id = role.id;",
