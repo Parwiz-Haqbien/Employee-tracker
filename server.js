@@ -106,75 +106,45 @@ const { query } = require('express');
         }, 1000);
       }
 
-   var roleAdding = [];
-   function selectRole() {
-    db.query('SELECT + FROM role', function(error, respond) {
-        if(error) throw error
-        for(var i = 0; i < respond.length; ++i) {
-            roleAdding.push(respond[i].title)
+
+      function addDepartment() {
+        connection.query(`SELECT * FROM department`, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+        });
+        setTimeout(() => {
+            inquirer
+            .prompt([
+                {
+                    name: "departmentName",
+                    type: "input",
+                    message: "What is you department name?"
+                },
+            ])
+            .then((answer) => {
+                connection.query(
+                  "INSERT INTO department SET ?",
+                  {
+                    name: answer.departmentName,
+                  },
+                  function (err) {
+                    if (err) {
+                      throw err;
+                    } else {
+                      let query = "SELECT * FROM department";
+                      connection.query(query, function (err, res) {
+                        if (err) throw err;
+                        {
+                          console.table(res);
+                        }
+                        init();
+                      });
+                    }
+                  }
+                );
+              });
+          }, 1000);
         }
-    })
-    return roleAdding
-   }
-
-   
-   var managerAdding = [];
-   function selectManager() {
-    db.query('SELECT first_name, last_name FROM employee WHERE manager_id IS NULL', function(error, respond) {
-        if(error) throw error
-        for(var i = 0; i < respond.length; ++ iS) {
-            managerAdding.push(respond[i].title)
-        }
-    })
-    return managerAdding
-   }
-   
-   function addEmployee() {
-    inquirer
-    .prompt([
-        {
-            name: "firstname",
-            type: "input",
-            message: "What is their first name?"
-        },
-
-        {
-            name: "lastname",
-            type: "input",
-            message: "What is their last name?"
-        },
-
-        {
-            name: "role",
-            type: "input",
-            message: "What is their role?",
-            choices: selectRole()
-        },
-
-        {
-            name: "option",
-            type: "rawlist",
-            message: "What is their manager name?",
-            choices: selectManager()
-        },
-
-    ]).then(function(answser) {
-        var roleId = selectRole().indexOf(answser.role) + 1 
-        var managerId = selectManager().indexOf(answser.choice) + 1 
-        db.query('Add to employee?', 
-        {
-            first_name: answser.first_name,
-            last_name: answser.last_name,
-            role_id: answser.roleId,
-            manager_id: answser.managerId,
-
-             }, function(error) {
-                    if (error) throw error;
-                    console.table(answser)
-                    startPrompt();
-             })
-    })
-   }
 
    function updateEmployee() {
     db.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id= role.id;", function(error,respond) {
