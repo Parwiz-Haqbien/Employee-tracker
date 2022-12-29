@@ -13,7 +13,7 @@ This is a Employee tracker application to create an app to track, generate and r
 N/A
 
 ## Usage
-- Application will allow user to be able to view all roles , employees and departments
+- Application will allow user to be able to view all the roles, employees and departments
 - Application will allow user to be able to add new roles, departments and employees
 
 ## Contribution
