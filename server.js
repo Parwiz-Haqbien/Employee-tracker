@@ -49,7 +49,7 @@ const terminalTable = require('console.table');
             break;
      
             case "Update employee role": 
-            updateEmployee();
+            updateEmployeeId();
             break;
      
             case "Exist": 
@@ -109,14 +109,14 @@ const terminalTable = require('console.table');
                 {
                     name: "departmentName",
                     type: "input",
-                    message: "What is the new department name?"
+                    message: "What would you like to call your department?"
                 },
             ])
             .then((answer) => {
                 connection.query(
                   "INSERT INTO department SET ?",
                   {
-                    name: answer.departmentName,
+                    names: answer.departmentName,
                   },
                   function (err) {
                     if (err) {
@@ -161,7 +161,7 @@ const terminalTable = require('console.table');
                   {
                     name: "roleSalary",
                     type: "input",
-                    message: "What is the salary",
+                    message: "What is the salary for this role",
                   },
                   {
                     name: "departmentId",
@@ -211,20 +211,14 @@ const terminalTable = require('console.table');
             inquirer
               .prompt([
                 {
-                  name: "isManager",
-                  type: "confirm",
-                  message: "Is the employee being added a manager?",
-                },
-    
-                {
                   name: "employeeFirst",
                   type: "input",
-                  message: "What is your employee's first name?",
+                  message: "What is the employee's first name?",
                 },
                 {
                   name: "employeeLast",
                   type: "input",
-                  message: "What is your employee's last name?",
+                  message: "What is the employee's last name?",
                 },
                 {
                   name: "employeeRoleId",
@@ -235,9 +229,7 @@ const terminalTable = require('console.table');
                   name: "managerId",
                   type: "input",
                   message: "What is the employee's manager's id?",
-                  when: (answer) => {
-                    return answer.isManager === false;
-                  },
+                
                 },
               ])
               .then(function (answer) {
@@ -270,7 +262,7 @@ const terminalTable = require('console.table');
               });
           }, 1000);
         }
-        function updateEmployee (){
+        function updateEmployeeId (){
             connection.query(
                 `SELECT r.id AS 'Role Id', title AS Title, CONCAT(first_name," ",last_name) AS Name, e.id AS 'Id #'
                 FROM roles r
@@ -287,7 +279,7 @@ const terminalTable = require('console.table');
                     {
                       name: "employeeID",
                       type: "input",
-                      message: "What is the employee's id?",
+                      message: "What is the employee's id you would like to update?",
                     },
           
                     {
