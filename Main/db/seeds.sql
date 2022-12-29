@@ -4,9 +4,9 @@ insert INTO department(name)
 values('Sales');
 insert INTO department(name)
 values('Engineering');
-insert INTO department(name)
+insert INTO department(names)
 values('Finance');
-insert INTO department(name)
+insert INTO department(names)
 values('Service');
 
 -- Sales Department
