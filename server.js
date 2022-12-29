@@ -52,7 +52,7 @@ const terminalTable = require('console.table');
             updateEmployeeId();
             break;
      
-            case "Exist": 
+            case "Exit": 
             connection.end();
             break; 
              }
