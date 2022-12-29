@@ -1,8 +1,14 @@
 USE tracker_db;
 
-insert INTO department(name)
+SET FOREIGN_KEY_CHECKS = 0;
+truncate roles;
+truncate department;
+truncate employee;
+SET FOREIGN_KEY_CHECKS = 1;
+
+insert INTO department(names)
 values('Sales');
-insert INTO department(name)
+insert INTO department(names)
 values('Engineering');
 insert INTO department(names)
 values('Finance');

@@ -4,7 +4,7 @@ const terminalTable = require('console.table');
   
   function init() {
     inquirer
-      .prompt([ 
+      .prompt(
         {
         name: "choice",
         type: "list",
@@ -21,19 +21,19 @@ const terminalTable = require('console.table');
         ]
     }
       
-    ]).then((res) => {
+          ).then((res) => {
         let choice = res.choice;
         switch(choice) {
             case "View all departments":
-            viewALLDepartment();
+            viewAllDepartment();
             break;
 
             case "View all roles": 
-            viewALLRoles();
+            viewAllRoles();
             break;
      
             case "View all employees": 
-            viewALLEmployees();
+            viewAllEmployees();
             break;
      
             case "Add a department": 
@@ -56,10 +56,9 @@ const terminalTable = require('console.table');
             connection.end();
             break; 
              }
-        }
-    )};
+           });
 
-    function viewALLDepartment() {
+    function viewAllDepartment() {
         setTimeout(() => {
           let query = "SELECT * FROM department";
           connection.query(query, function (err, res) {
@@ -72,7 +71,7 @@ const terminalTable = require('console.table');
         }, 1000);
       }
 
-      function viewALLRoles() {
+      function viewAllRoles() {
         setTimeout(() => {
           let query = "SELECT * FROM roles";
           connection.query(query, function (err, res) {
@@ -85,7 +84,7 @@ const terminalTable = require('console.table');
         }, 1000);
       }
 
-      function viewALLEmployees() {
+      function viewAllEmployees() {
         setTimeout(() => {
           let query = "SELECT * FROM employee";
           connection.query(query, function (err, res) {
@@ -110,7 +109,7 @@ const terminalTable = require('console.table');
                 {
                     name: "departmentName",
                     type: "input",
-                    message: "What is you department name?"
+                    message: "What is the new department name?"
                 },
             ])
             .then((answer) => {
@@ -202,7 +201,7 @@ const terminalTable = require('console.table');
             `SELECT r.id AS 'Role Id', title AS Title, CONCAT(first_name," ",last_name) AS Name, e.id AS 'Id #'
                   FROM roles r
                   LEFT JOIN employee e
-                  ON e.role_id = r.id;`,
+                  ON e.roles_id = r.id;`,
             (err, res) => {
               if (err) throw err;
               console.table(res);
@@ -247,7 +246,7 @@ const terminalTable = require('console.table');
                   {
                     first_name: answer.employeeFirst,
                     last_name: answer.employeeLast,
-                    role_id: answer.employeeRoleId,
+                    roles_id: answer.employeeRoleId,
                     manager_id: answer.managerId,
                   },
                   function (err) {
@@ -257,7 +256,7 @@ const terminalTable = require('console.table');
                       let query = `SELECT r.id AS 'Role Id', title AS Title, CONCAT(first_name," ",last_name) AS Name, e.id AS 'Id #'
                         FROM roles r
                         LEFT JOIN employee e
-                        ON e.role_id = r.id;`;
+                        ON e.roles_id = r.id;`;
                       connection.query(query, function (err, res) {
                         if (err) throw err;
                         {
@@ -276,7 +275,7 @@ const terminalTable = require('console.table');
                 `SELECT r.id AS 'Role Id', title AS Title, CONCAT(first_name," ",last_name) AS Name, e.id AS 'Id #'
                 FROM roles r
                 LEFT JOIN employee e
-                ON e.role_id = r.id;`,
+                ON e.roles_id = r.id;`,
                 (err, res) => {
                   if (err) throw err;
                   console.table(res);
@@ -299,7 +298,7 @@ const terminalTable = require('console.table');
                   ])
                   .then((answer) => {
                     connection.query(
-                      `UPDATE employee SET role_id  = ${answer.updateEmployeeRole}
+                      `UPDATE employee SET roles_id  = ${answer.updateEmployeeRole}
                      WHERE id = ${answer.employeeID};`,
                       (err) => {
                         if (err) {
@@ -309,7 +308,7 @@ const terminalTable = require('console.table');
                             `SELECT r.id AS 'Role Id', title AS Title, CONCAT(first_name," ",last_name) AS Name, e.id AS 'Id #'
                             FROM roles r
                             LEFT JOIN employee e
-                            ON e.role_id = r.id;`,
+                            ON e.roles_id = r.id;`,
                             (err, res) => {
                               if (err) throw err;
                               console.table(res);
@@ -322,6 +321,6 @@ const terminalTable = require('console.table');
                   });
               }, 1000);
             }
-        
+        }
     init();
 
