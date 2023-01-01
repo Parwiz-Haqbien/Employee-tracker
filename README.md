@@ -16,6 +16,9 @@ N/A
 - Application will allow user to be able to view all the roles, employees and departments
 - Application will allow user to be able to add new roles, departments and employees
 
+
+![App Screenshot](https://github.com/Parwiz-Haqbien/Employee-tracker/blob/main/Main/assets/Screenshot%202023-01-02%20014805.png?raw=true)
+
 ## Contribution
 Made by Parwiz Haqbien
 
